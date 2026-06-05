@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [Header("Valores do Jogo")]
     public int score = 0;
     public int municaoAtual = 10;
-    public int municaoMaxima = 10; // Definido aqui a munição máxima
+    public int municaoMaxima = 10;
     public float tempo = 60f;
     private bool jogoAtivo = true;
 
@@ -35,7 +35,9 @@ public class GameManager : MonoBehaviour
             tempo -= Time.deltaTime;
             AtualizarTextos();
 
-            if (tempo <= 0 || municaoAtual <= 0)
+            // ⚠️ CORRIGIDO: O jogo agora SÓ acaba se o TEMPO chegar a 0.
+            // Quando a munição zerar, o jogo continua ativo para você poder apertar R.
+            if (tempo <= 0)
             {
                 FimDeJogo();
             }
@@ -110,7 +112,6 @@ public class GameManager : MonoBehaviour
     {
         string nomeDaCenaAtual = SceneManager.GetActiveScene().name;
 
-        // Se a cena não tiver nome (não foi salva), avisa no console do Unity
         if (string.IsNullOrEmpty(nomeDaCenaAtual))
         {
             Debug.LogError("⚠️ ALERTA: Você precisa salvar sua Fase antes de apertar Enter! Aperte Ctrl+S no Unity.");
