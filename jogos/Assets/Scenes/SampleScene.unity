@@ -19402,7 +19402,7 @@ MonoBehaviour:
     moveVertical: 1
     moveSpeed: 2
     moveRange: 3
-    health: 0
+    health: 1
     pointsValue: 10
   - position: {fileID: 1289302591}
     targetPrefab: {fileID: 1149607361}
@@ -19413,7 +19413,7 @@ MonoBehaviour:
     moveVertical: 0
     moveSpeed: 2
     moveRange: 3
-    health: 0
+    health: 1
     pointsValue: 10
   - position: {fileID: 1267022585}
     targetPrefab: {fileID: 1149607361}
@@ -19424,7 +19424,7 @@ MonoBehaviour:
     moveVertical: 0
     moveSpeed: 2
     moveRange: 3
-    health: 0
+    health: 1
     pointsValue: 10
   - position: {fileID: 351674382}
     targetPrefab: {fileID: 1149607361}
@@ -19435,7 +19435,7 @@ MonoBehaviour:
     moveVertical: 0
     moveSpeed: 2
     moveRange: 3
-    health: 0
+    health: 1
     pointsValue: 10
 --- !u!4 &493354483
 Transform:
@@ -35114,7 +35114,8 @@ MonoBehaviour:
   textoAmmo: {fileID: 1409218539}
   textoGameOver: {fileID: 821811182}
   score: 0
-  municao: 30
+  municaoAtual: 10
+  municaoMaxima: 10
   tempo: 60
 --- !u!114 &936779040
 MonoBehaviour:
@@ -53042,9 +53043,9 @@ RectTransform:
   m_Father: {fileID: 936779043}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1446.8, y: -103}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 122, y: 73}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1409218539
@@ -53067,7 +53068,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ammo: 30'
+  m_text: ammo:10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -53702,9 +53703,9 @@ RectTransform:
   m_Father: {fileID: 936779043}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -668.3, y: 327.2}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 127, y: -43}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422343783
@@ -53790,7 +53791,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -69.070984, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -72029,11 +72030,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb017f028761324c9c79c36a8ccda1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabDaBala: {fileID: 2042685887}
-  firePoint: {fileID: 527956892}
-  velocidadeDaBala: 20
-  cameraJogador: {fileID: 330585545}
-  gameManager: {fileID: 936779039}
+  balaPrefab: {fileID: 2042685887}
+  pontoDeTiro: {fileID: 527956892}
+  forcaDoTiro: 30
+  tempoDeRecarga: 2
 --- !u!54 &1901922043
 Rigidbody:
   m_ObjectHideFlags: 0

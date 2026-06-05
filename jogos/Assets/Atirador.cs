@@ -1,49 +1,75 @@
 using UnityEngine;
+using System.Collections;
 
 public class Atirador : MonoBehaviour
 {
-    [Header("Configurações de Tiro")]
-    public GameObject prefabDaBala;
-    public Transform firePoint;
-    public float velocidadeDaBala = 30f; // Aumentei um pouco para ficar mais realista
-    public Camera cameraJogador; // A câmera para calcular o centro da tela
+    [Header("Configurações do Tiro")]
+    public GameObject balaPrefab;
+    public Transform pontoDeTiro;
+    public float forcaDoTiro = 30f;
 
-    [Header("Conexão")]
-    public GameManager gameManager;
+    [Header("Configurações de Recarga")]
+    public float tempoDeRecarga = 2.0f;
+    private bool estaRecarregando = false;
+
+    private GameManager gameManager; // Guarda a referência do GameManager
+
+    void Start()
+    {
+        // Encontra o GameManager que está na cena automaticamente
+        gameManager = FindObjectOfType<GameManager>();
+    }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && gameManager.municao > 0)
+        if (estaRecarregando || gameManager == null) return;
+
+        // Atira ao clicar com o botão esquerdo
+        if (Input.GetButtonDown("Fire1"))
         {
-            AtirarComMira();
-            gameManager.GastarMunicao();
+            // Pergunta para o GameManager se pode atirar
+            if (gameManager.PodeAtirar())
+            {
+                Atirar();
+            }
+            else
+            {
+                Debug.Log("Sem munição! Aperte R para recarregar.");
+            }
+        }
+
+        // Recarrega ao apertar R
+        if (Input.GetKeyDown(KeyCode.R) && gameManager.PrecisaRecarregar())
+        {
+            StartCoroutine(RecarregarCoroutine());
         }
     }
 
-    void AtirarComMira()
+    void Atirar()
     {
-        // 1. Cria um raio invisível saindo do centro exato da tela (onde está o crosshair)
-        Ray raioDaMira = cameraJogador.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-        Vector3 pontoDeDestino;
+        // Manda o GameManager gastar uma bala
+        gameManager.GastarMunicao();
 
-        // 2. Verifica se o raio da mira bateu em alguma coisa ou se foi pro infinito
-        if (Physics.Raycast(raioDaMira, out hit))
+        // Código físico do tiro
+        GameObject novaBala = Instantiate(balaPrefab, pontoDeTiro.position, pontoDeTiro.rotation);
+        Rigidbody rb = novaBala.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            pontoDeDestino = hit.point; // O ponto exato onde você mirou
+            rb.AddForce(pontoDeTiro.forward * forcaDoTiro, ForceMode.Impulse);
         }
-        else
-        {
-            pontoDeDestino = raioDaMira.GetPoint(1000); // Um ponto muito longe no horizonte
-        }
+    }
 
-        // 3. Cria a bala no cano da arma
-        GameObject novaBala = Instantiate(prefabDaBala, firePoint.position, firePoint.rotation);
+    IEnumerator RecarregarCoroutine()
+    {
+        estaRecarregando = true;
 
-        // 4. Calcula a direção: do cano da arma até o ponto para onde você mirou
-        Vector3 direcaoDoTiro = (pontoDeDestino - firePoint.position).normalized;
+        // Pede para o GameManager escrever "Recarregando..." na tela
+        gameManager.MostrarTextoRecarregando();
 
-        // 5. Aplica a força na bala na direção correta
-        novaBala.GetComponent<Rigidbody>().velocity = direcaoDoTiro * velocidadeDaBala;
+        yield return new WaitForSeconds(tempoDeRecarga);
+
+        // Termina o tempo e manda o GameManager resetar as balas
+        gameManager.RecarregarMunicao();
+        estaRecarregando = false;
     }
 }
